@@ -1,0 +1,50 @@
+name: prompt-poker
+base: core24
+version: '0.1'
+license: GPL-3.0+
+summary: A simple snap to trigger prompts
+description: |
+  A simple snap to trigger prompts.
+
+source-code:
+  - https://github.com/olivercalder/prompt-poker
+issues:
+  - https://github.com/olivercalder/prompt-poker/issues
+
+grade: stable
+confinement: strict
+
+parts:
+  prompt-poker:
+    plugin: nil
+    source: src
+    build-snaps:
+      - go
+    override-build: |
+      go build -o "${CRAFT_PART_INSTALL}/bin/prompt-poker" prompt-poker.go
+
+  shell-utils:
+    plugin: nil
+    stage-packages:
+      - coreutils
+      - bash
+      - fish
+      - zsh
+
+apps:
+  prompt-poker:
+    command: /bin/prompt-poker
+    plugs:
+      - home
+  bash:
+    command: /usr/bin/bash
+    plugs:
+      - home
+  fish:
+    command: /usr/bin/fish
+    plugs:
+      - home
+  zsh:
+    command: /bin/zsh
+    plugs:
+      - home
