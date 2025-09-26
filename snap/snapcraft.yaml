@@ -31,10 +31,10 @@ parts:
 
 apps:
   prompt-poker:
-    command: /bin/prompt-poker
+    command: bin/prompt-poker
     plugs:
       - home
   bash:
-    command: /usr/bin/bash
+    command: usr/bin/bash
     plugs:
       - home
