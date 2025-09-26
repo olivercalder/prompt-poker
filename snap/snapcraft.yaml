@@ -28,8 +28,6 @@ parts:
     stage-packages:
       - coreutils
       - bash
-      - fish
-      - zsh
 
 apps:
   prompt-poker:
@@ -38,13 +36,5 @@ apps:
       - home
   bash:
     command: /usr/bin/bash
-    plugs:
-      - home
-  fish:
-    command: /usr/bin/fish
-    plugs:
-      - home
-  zsh:
-    command: /bin/zsh
     plugs:
       - home
