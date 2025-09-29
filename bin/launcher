@@ -1,0 +1,10 @@
+#!/bin/sh
+
+case "$(snapctl get impl-lang)" in
+	c) prompt-poker-c "$@" ;;
+	go) prompt-poker-go "$@" ;;
+	rust) prompt-poker-rust "$@" ;;
+	*)
+		# Default to C implementation
+		prompt-poker-c "$@"
+esac

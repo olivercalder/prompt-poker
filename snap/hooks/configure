@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Validate impl-lang
+SETTING="$(snapctl get impl-lang)"
+
+# If it's unset, set it to "c"
+if [ -z "$SETTING" ] ; then
+	snapctl set impl-lang=c
+	SETTING="$(snapctl get impl-lang)"
+fi
+
+case "$SETTING" in
+	c) ;;
+	go) ;;
+	rust) ;;
+	*)
+		echo "Unsupported value for 'impl-lang': '$SETTING'"
+		echo "Supported values: 'c', 'go', 'rust'"
+		exit 1
+esac

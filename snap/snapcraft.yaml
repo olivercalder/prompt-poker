@@ -6,6 +6,12 @@ summary: A simple snap to trigger prompts
 description: |
   A simple snap to trigger prompts.
 
+  By default, uses an implementation written in C.
+
+  The implementation can be changed by setting the `impl-lang` configuration.
+  For example, `snap set prompt-poker impl-lang=rust`.
+  The supported values are: `c`, `go`, `rust`.
+
 source-code:
   - https://github.com/olivercalder/prompt-poker
 issues:
@@ -18,10 +24,20 @@ parts:
   prompt-poker:
     plugin: nil
     source: src
+    build-packages:
+      - gcc
+      - rustc
     build-snaps:
       - go
     override-build: |
-      go build -o "${CRAFT_PART_INSTALL}/bin/prompt-poker" prompt-poker.go
+      mkdir -p "${CRAFT_PART_INSTALL}/bin"
+      gcc -o "${CRAFT_PART_INSTALL}/bin/prompt-poker-c" prompt-poker.c
+      go build -o "${CRAFT_PART_INSTALL}/bin/prompt-poker-go" prompt-poker.go
+      rustc -o "${CRAFT_PART_INSTALL}/bin/prompt-poker-rust" prompt-poker.rs
+
+  launcher:
+    plugin: dump
+    source: bin
 
   shell-utils:
     plugin: nil
@@ -31,7 +47,7 @@ parts:
 
 apps:
   prompt-poker:
-    command: bin/prompt-poker
+    command: launcher
     plugs:
       - home
   bash:
