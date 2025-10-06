@@ -1,8 +1,7 @@
 #include <errno.h>
-#include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/stat.h>
+#include <sys/file.h>
 #include <unistd.h>
 
 int create_write_chmod_file(char *filepath) {
@@ -11,7 +10,7 @@ int create_write_chmod_file(char *filepath) {
 	const char *msg2 = "hello again\n";
 	size_t len_written;
 	int result;
-	int fd = open(filepath, O_WRONLY|O_CREAT, 0600);
+	int fd = open(filepath, O_WRONLY|O_CREAT, 0644);
 	if (fd < 0) {
 		return errno;
 	}
@@ -20,8 +19,8 @@ int create_write_chmod_file(char *filepath) {
 	if (len_written < 0) {
 		goto cleanup;
 	}
-	/* chmod */
-	result = fchmod(fd, 0644);
+	/* lock */
+	result = flock(fd, LOCK_SH);
 	if (result < 0) {
 		goto cleanup;
 	}
